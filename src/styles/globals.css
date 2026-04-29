@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600&display=swap");
+
+@theme {
+  /* Fonts */
+  --font-serif: "Noto Serif Devanagari", serif;
+  
+  /* Custom Orange Palette (from your export) */
+  --color-orange-50: oklch(.98 .016 73.684);
+  --color-orange-100: oklch(.954 .038 75.164);
+  --color-orange-200: oklch(.901 .076 70.697);
+  --color-orange-300: oklch(.837 .128 66.29);
+  --color-orange-400: oklch(.75 .183 55.934);
+  --color-orange-600: oklch(.646 .222 41.116);
+  --color-orange-700: oklch(.553 .195 38.402);
+  --color-orange-800: oklch(.47 .157 37.304);
+  --color-orange-900: oklch(.408 .123 38.172);
+  --color-orange-950: oklch(.266 .079 36.259);
+
+  /* Indigo Palette used in ResultCard */
+  --color-indigo-50: oklch(.962 .018 272.314);
+  --color-indigo-200: oklch(.87 .065 274.039);
+  --color-indigo-300: oklch(.785 .115 274.713);
+  --color-indigo-600: oklch(.511 .262 276.966);
+  --color-indigo-700: oklch(.457 .24 277.023);
+  --color-indigo-800: oklch(.398 .195 277.366);
+  --color-indigo-900: oklch(.359 .144 278.697);
+  --color-indigo-950: oklch(.257 .09 281.288);
+}
+
+/* Base Styles */
+@layer base {
+  body {
+    @apply bg-gradient-to-b from-orange-50 to-orange-100 min-h-screen text-orange-950;
+  }
+}
