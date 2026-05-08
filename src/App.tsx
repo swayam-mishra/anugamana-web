@@ -1,90 +1,34 @@
-import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
+import { Loader2 } from 'lucide-react';
 import { Header } from './components/Header';
-import { HeroSection } from './components/HeroSection';
-import { ResultCard } from './components/ResultCard';
-const fetchVerses = async ({ query, chapter }: { query: string; chapter: number | null }) => {
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
-  const body: Record<string, unknown> = { query, limit: 1 };
-  if (chapter) body.chapter = chapter;
+import { LandingPage } from './pages/LandingPage';
 
-  const response = await fetch(`${apiUrl}/search`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
+const AboutPage = lazy(() => import('./pages/AboutPage').then((m) => ({ default: m.AboutPage })));
+const VersePage = lazy(() => import('./pages/VersePage').then((m) => ({ default: m.VersePage })));
 
-  if (!response.ok) throw new Error('Network response was not ok');
-  return response.json();
-};
+function PageLoader() {
+  return (
+    <div className="flex justify-center items-center py-20">
+      <Loader2 className="w-6 h-6 text-orange-600 animate-spin" />
+    </div>
+  );
+}
 
 function App() {
-  const [query, setQuery] = useState('');
-  const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
-
-  // React Query useMutation handles all the heavy lifting
-  const searchMutation = useMutation({
-    mutationFn: fetchVerses,
-  });
-
-  const handleSeekGuidance = () => {
-    if (!query.trim()) return;
-    searchMutation.mutate({ query, chapter: selectedChapter });
-  };
-
-  const handleSearchAgain = () => {
-    setQuery('');
-    searchMutation.reset();
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      <Header />
-      <main className="container mx-auto px-4 py-8">
-        <HeroSection
-          state={searchMutation.isPending ? 'loading' : 'idle'}
-          userInput={query}
-          onInputChange={setQuery}
-          onSeekGuidance={handleSeekGuidance}
-          selectedChapter={selectedChapter}
-          onChapterChange={setSelectedChapter}
-        />
-
-        {/* Status Messages */}
-        {searchMutation.isError && (
-          <div className="text-red-500 text-center mb-8">
-            An error occurred: {searchMutation.error.message}
-          </div>
-        )}
-
-        {/* Results */}
-        <div className="max-w-4xl mx-auto space-y-6">
-          {searchMutation.data?.results?.map((result: any, index: number) => {
-            const interpretation = result.metadata?.ai_advice
-              ?? 'Reflect on this verse — its wisdom speaks directly to your situation.';
-
-            return (
-              <ResultCard
-                key={index}
-                verse={{
-                  chapter: result.metadata?.chapter,
-                  verse: result.metadata?.verse,
-                  sanskrit: result.metadata?.text || '',
-                  transliteration: '',
-                  synonyms: '',
-                  translation: result.metadata?.translation || '',
-                  purport: result.metadata?.meaning || '',
-                  interpretation,
-                  keywords: [],
-                }}
-                onSearchAgain={handleSearchAgain}
-                userInput={query}
-              />
-            );
-          })}
-        </div>
-      </main>
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen bg-gray-50 text-gray-900">
+        <Header />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/verse/:id" element={<VersePage />} />
+          </Routes>
+        </Suspense>
+      </div>
+    </BrowserRouter>
   );
 }
 
