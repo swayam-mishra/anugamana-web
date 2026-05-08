@@ -68,6 +68,7 @@ const FEATURES = [
     title: 'In your language',
     body: 'Search and receive guidance in Hindi, Bengali, Tamil, Telugu, and more Indian languages.',
     soon: true,
+    sarvam: true,
     accent: 'orange',
   },
   {
@@ -75,6 +76,7 @@ const FEATURES = [
     title: 'Hear the verse',
     body: 'Listen to each verse recited aloud in Sanskrit, with correct pronunciation and rhythm.',
     soon: true,
+    sarvam: true,
     accent: 'indigo',
   },
   {
@@ -82,6 +84,7 @@ const FEATURES = [
     title: 'Speak your question',
     body: 'Not in the mood to type? Speak what you\'re feeling. Especially useful on mobile.',
     soon: true,
+    sarvam: true,
     accent: 'orange',
   },
   {
@@ -133,7 +136,7 @@ const STATS = [
   { value: '700', label: 'verses' },
   { value: '18', label: 'chapters' },
   { value: '5,000+', label: 'years of wisdom' },
-  { value: 'Claude', label: 'AI guidance' },
+  { value: 'AI', label: 'guided' },
 ];
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -364,43 +367,53 @@ export function LandingPage() {
               <p className="text-orange-700 text-sm">Built for anyone seeking guidance — wherever they are, whatever language they think in.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {FEATURES.map(({ icon: Icon, title, body, soon, accent }) => (
-                <motion.div
-                  key={title}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-40px' }}
-                  transition={{ duration: 0.4 }}
-                  className={`relative p-5 rounded-2xl border transition-shadow hover:shadow-md ${
-                    soon
-                      ? 'bg-gray-50/80 border-gray-200'
-                      : accent === 'orange'
-                        ? 'bg-orange-50 border-orange-200'
-                        : 'bg-indigo-50 border-indigo-200'
-                  }`}
-                >
-                  {soon && (
-                    <span className="absolute top-3 right-3 px-2 py-0.5 bg-gray-200 text-gray-500 rounded-full text-[9px] font-bold uppercase tracking-widest">
-                      Soon
-                    </span>
-                  )}
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${
-                    soon
-                      ? 'bg-gray-200 text-gray-400'
-                      : accent === 'orange'
-                        ? 'bg-orange-200 text-orange-700'
-                        : 'bg-indigo-200 text-indigo-700'
-                  }`}>
-                    <Icon className="w-4 h-4" />
-                  </div>
-                  <h3 className={`font-semibold text-sm mb-1.5 ${soon ? 'text-gray-400' : 'text-gray-900'}`}>
-                    {title}
-                  </h3>
-                  <p className={`text-xs leading-relaxed ${soon ? 'text-gray-400' : 'text-gray-500'}`}>
-                    {body}
-                  </p>
-                </motion.div>
-              ))}
+              {FEATURES.map(({ icon: Icon, title, body, soon, accent, ...rest }) => {
+                const sarvam = (rest as { sarvam?: boolean }).sarvam;
+                return (
+                  <motion.div
+                    key={title}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-40px' }}
+                    transition={{ duration: 0.4 }}
+                    className={`relative p-5 rounded-2xl border transition-shadow hover:shadow-md ${
+                      soon
+                        ? 'bg-gray-50/80 border-gray-200'
+                        : accent === 'orange'
+                          ? 'bg-orange-50 border-orange-200'
+                          : 'bg-indigo-50 border-indigo-200'
+                    }`}
+                  >
+                    {soon && (
+                      <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                        {sarvam && (
+                          <span className="px-2 py-1 bg-white rounded-full border border-gray-200 flex items-center">
+                            <img src="/sarvam-wordmark.png" alt="Sarvam AI" className="h-2.5 w-auto" />
+                          </span>
+                        )}
+                        <span className="px-2 py-0.5 bg-gray-200 text-gray-500 rounded-full text-[9px] font-bold uppercase tracking-widest">
+                          Soon
+                        </span>
+                      </div>
+                    )}
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${
+                      soon
+                        ? 'bg-gray-200 text-gray-400'
+                        : accent === 'orange'
+                          ? 'bg-orange-200 text-orange-700'
+                          : 'bg-indigo-200 text-indigo-700'
+                    }`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <h3 className={`font-semibold text-sm mb-1.5 ${soon ? 'text-gray-400' : 'text-gray-900'}`}>
+                      {title}
+                    </h3>
+                    <p className={`text-xs leading-relaxed ${soon ? 'text-gray-400' : 'text-gray-500'}`}>
+                      {body}
+                    </p>
+                  </motion.div>
+                );
+              })}
             </div>
           </section>
 
@@ -491,14 +504,6 @@ export function LandingPage() {
                   className="hover:text-orange-900 transition-colors"
                 >
                   Vedabase Source
-                </a>
-                <a
-                  href="https://anthropic.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-orange-900 transition-colors"
-                >
-                  Powered by Claude
                 </a>
               </div>
             </div>
