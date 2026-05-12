@@ -1,30 +1,32 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { Search, Cpu, Sparkles, BookOpen, ArrowRight } from 'lucide-react';
+import { MessageCircle, Cpu, Sparkles, BookOpen, ArrowRight } from 'lucide-react';
 
 const STEPS = [
   {
-    icon: Search,
+    icon: MessageCircle,
     title: 'Describe your situation',
-    body: 'Write what you\'re going through — a decision you\'re struggling with, an emotion weighing on you, or a question about how to live. Plain language, no Sanskrit required.',
+    body: "Write it the way you'd say it out loud — a hard decision, a feeling you can't shake, a question that won't leave you alone. Plain language, no Sanskrit required.",
   },
   {
     icon: Cpu,
-    title: 'Semantic retrieval',
-    body: 'Your query is transformed and matched against all 700 verses using dense + sparse hybrid search. The pipeline retrieves by meaning, not just keywords, so emotionally-charged queries find philosophically-relevant verses.',
+    title: 'We find the verse that fits',
+    body: 'Your query is routed intelligently: verse references go straight to direct lookup, Sanskrit text skips expansion, and everything else goes through the full pipeline — HyDE generates a hypothetical Prabhupada-style commentary to bridge the vocabulary gap, then hybrid dense and sparse retrieval searches all 700 verses by meaning. A cross-encoder reranker picks the best match.',
   },
   {
     icon: Sparkles,
-    title: 'Claude-generated guidance',
-    body: 'The most relevant verse — with its full commentary by Srila Prabhupada — is sent to Claude, which explains why this particular teaching speaks to your situation.',
+    title: 'Guidance grounded in the text',
+    body: 'The top verse — with its full commentary by Srila Prabhupada — is sent to Claude Haiku 4.5, which explains why this specific teaching speaks to your situation. Nothing is invented or added: the guidance comes strictly from the retrieved verse and purport.',
   },
 ];
 
 const TECH = [
-  { label: 'Embeddings', value: 'BAAI/bge-m3 — dense + sparse hybrid, 1024 dimensions' },
-  { label: 'Vector store', value: 'ChromaDB (local) with custom sparse index' },
-  { label: 'Reranking', value: 'ms-marco-MiniLM cross-encoder + MMR diversity' },
-  { label: 'LLM', value: 'Claude (Anthropic) for enrichment, HyDE, and guidance' },
+  { label: 'Embeddings', value: 'BAAI/bge-m3 — multilingual, dense + sparse, 1024 dimensions' },
+  { label: 'Vector store', value: 'ChromaDB — 2,603 vectors across meaning, translation, and purport collections' },
+  { label: 'Sparse index', value: 'BGE-M3 lexical weights — 8,952 unique tokens, no separate BM25 needed' },
+  { label: 'Reranking', value: 'ms-marco-MiniLM-L-6-v2 cross-encoder + MMR diversity pass' },
+  { label: 'Query routing', value: 'Direct lookup · Sanskrit fast-path · Full semantic (HyDE + expansion)' },
+  { label: 'LLM', value: 'Claude Haiku 4.5 — guardrails, HyDE expansion, and guidance generation' },
   { label: 'Source', value: 'Vedabase.io — Bhagavad Gita As It Is by Srila Prabhupada' },
 ];
 
