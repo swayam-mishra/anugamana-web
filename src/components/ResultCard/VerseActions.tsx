@@ -9,6 +9,7 @@ interface VerseActionsProps {
   verse: number;
   devanagari: string;
   translation: string;
+  responseId: number | null;
   onSearchAgain: () => void;
 }
 
@@ -18,6 +19,7 @@ export function VerseActions({
   verse,
   devanagari,
   translation,
+  responseId,
   onSearchAgain,
 }: VerseActionsProps) {
   const [copied, setCopied] = useState(false);
@@ -25,7 +27,7 @@ export function VerseActions({
   const [feedbackExpanded, setFeedbackExpanded] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
   const [feedbackSent, setFeedbackSent] = useState(false);
-  const { submitRating, currentRating } = useFeedback(verseId);
+  const { submitRating, currentRating, canSubmit } = useFeedback(verseId, responseId);
 
   const handleCopy = () => {
     const text = `Bhagavad Gita ${chapter}.${verse}\n\n${devanagari}\n\n${translation}`;
@@ -90,30 +92,32 @@ export function VerseActions({
             Search Again
           </button>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleLike}
-            aria-label="This verse was helpful"
-            className={`p-2 rounded-full border transition-all ${
-              currentRating === 1
-                ? 'bg-orange-100 border-orange-400 text-orange-700'
-                : 'bg-white border-gray-300 text-gray-500 hover:border-orange-300 hover:text-orange-600'
-            }`}
-          >
-            <ThumbsUp className="w-4 h-4" />
-          </button>
-          <button
-            onClick={handleDislike}
-            aria-label="This verse was not helpful"
-            className={`p-2 rounded-full border transition-all ${
-              currentRating === -1
-                ? 'bg-red-100 border-red-400 text-red-700'
-                : 'bg-white border-gray-300 text-gray-500 hover:border-red-300 hover:text-red-600'
-            }`}
-          >
-            <ThumbsDown className="w-4 h-4" />
-          </button>
-        </div>
+        {canSubmit && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleLike}
+              aria-label="This verse was helpful"
+              className={`p-2 rounded-full border transition-all ${
+                currentRating === 1
+                  ? 'bg-orange-100 border-orange-400 text-orange-700'
+                  : 'bg-white border-gray-300 text-gray-500 hover:border-orange-300 hover:text-orange-600'
+              }`}
+            >
+              <ThumbsUp className="w-4 h-4" />
+            </button>
+            <button
+              onClick={handleDislike}
+              aria-label="This verse was not helpful"
+              className={`p-2 rounded-full border transition-all ${
+                currentRating === -1
+                  ? 'bg-red-100 border-red-400 text-red-700'
+                  : 'bg-white border-gray-300 text-gray-500 hover:border-red-300 hover:text-red-600'
+              }`}
+            >
+              <ThumbsDown className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
 
       {feedbackExpanded && (

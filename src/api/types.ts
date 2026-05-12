@@ -13,15 +13,22 @@ export interface SearchResult {
 }
 
 export interface QueryMeta {
-  detected_language: string;
-  original_query: string;
-  translated_query: string;
-  guardrail: 'relevant' | 'irrelevant' | 'borderline';
+  guardrail: 'relevant' | 'off_topic' | 'irrelevant' | 'borderline';
+  query_route?: 'semantic' | 'direct_lookup' | 'sanskrit';
   retrieval_ms: number;
   rerank_ms: number;
   generation_ms: number;
-  translation_ms: number;
-  tts_ms: number;
+  total_ms?: number;
+  response_id: number | null;
+  degraded_stages?: string[];
+  confidence_filtered?: number;
+  low_confidence?: boolean;
+  // Phase 8 fields (Sarvam)
+  detected_language?: string;
+  original_query?: string;
+  translated_query?: string;
+  translation_ms?: number;
+  tts_ms?: number;
 }
 
 export interface SearchResponse {
@@ -37,7 +44,7 @@ export interface SearchRequest {
 }
 
 export interface FeedbackRequest {
-  response_id: string;
+  response_id: number;
   verse_id: string;
   rating: 1 | -1;
 }

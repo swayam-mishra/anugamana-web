@@ -49,6 +49,7 @@ export function VersePage() {
         <div className="max-w-4xl mx-auto">
           <ResultCard
             result={verse}
+            responseId={data?.query_meta.response_id ?? null}
             onSearchAgain={() => {}}
             userInput=""
           />

@@ -6,6 +6,8 @@ import { LandingPage } from './pages/LandingPage';
 
 const AboutPage = lazy(() => import('./pages/AboutPage').then((m) => ({ default: m.AboutPage })));
 const VersePage = lazy(() => import('./pages/VersePage').then((m) => ({ default: m.VersePage })));
+const SearchPage = lazy(() => import('./pages/SearchPage').then((m) => ({ default: m.SearchPage })));
+const HistoryPage = lazy(() => import('./pages/HistoryPage').then((m) => ({ default: m.HistoryPage })));
 
 function PageLoader() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/history" element={<HistoryPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/verse/:id" element={<VersePage />} />
           </Routes>

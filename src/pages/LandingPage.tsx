@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
+import { addToHistory } from '../lib/history';
 import {
   Sparkles,
   BookOpen,
@@ -153,8 +154,10 @@ export function LandingPage() {
   useEffect(() => {
     if (searchMutation.data && resultsRef.current) {
       resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const topVerse = searchMutation.data.results[0]?.verse_id;
+      if (topVerse) addToHistory(query, topVerse);
     }
-  }, [searchMutation.data]);
+  }, [searchMutation.data]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = () => {
     if (!isSignedIn) {
@@ -163,6 +166,7 @@ export function LandingPage() {
     }
     if (!query.trim()) return;
     searchMutation.mutate({ query, chapter: selectedChapter, limit: 5, language });
+    addToHistory(query);
   };
 
   const handleSearchAgain = () => {
@@ -172,7 +176,10 @@ export function LandingPage() {
   };
 
   const hasResults = !!searchMutation.data && !searchMutation.isPending;
-  const isGuardrail = searchMutation.data?.query_meta.guardrail === 'irrelevant';
+  const isGuardrail =
+    searchMutation.data?.query_meta.guardrail === 'irrelevant' ||
+    searchMutation.data?.query_meta.guardrail === 'off_topic';
+  const responseId = searchMutation.data?.query_meta.response_id ?? null;
 
   return (
     <div className="overflow-x-hidden">
@@ -288,6 +295,7 @@ export function LandingPage() {
               <ResultCard
                 key={result.verse_id}
                 result={result}
+                responseId={responseId}
                 onSearchAgain={handleSearchAgain}
                 userInput={query}
               />

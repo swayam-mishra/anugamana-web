@@ -1,4 +1,4 @@
-import { Info, ArrowLeft } from 'lucide-react';
+import { Info, ArrowLeft, Clock } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/react';
 
@@ -57,6 +57,13 @@ export function Header() {
           </Show>
 
           <Show when="signed-in">
+            <Link
+              to="/history"
+              className="flex items-center gap-1.5 text-sm text-orange-700 hover:text-orange-900 transition-colors"
+            >
+              <Clock className="w-4 h-4" />
+              <span className="hidden sm:inline">History</span>
+            </Link>
             <UserButton afterSignOutUrl="/" />
           </Show>
         </nav>

@@ -11,11 +11,12 @@ import { VerseActions } from './VerseActions';
 
 interface ResultCardProps {
   result: SearchResult;
+  responseId: number | null;
   onSearchAgain: () => void;
   userInput: string;
 }
 
-export const ResultCard = memo(function ResultCard({ result, onSearchAgain, userInput }: ResultCardProps) {
+export const ResultCard = memo(function ResultCard({ result, responseId, onSearchAgain, userInput }: ResultCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -40,6 +41,7 @@ export const ResultCard = memo(function ResultCard({ result, onSearchAgain, user
               verse={result.verse}
               devanagari={result.devanagari}
               translation={result.translation}
+              responseId={responseId}
               onSearchAgain={onSearchAgain}
             />
           </div>
