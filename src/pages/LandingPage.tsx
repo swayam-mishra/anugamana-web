@@ -196,7 +196,7 @@ export function LandingPage() {
               query={query}
               language={language}
               selectedChapter={selectedChapter}
-              loading={searchMutation.isPending}
+              loading={false}
               onQueryChange={setQuery}
               onLanguageChange={setLanguage}
               onChapterChange={setSelectedChapter}
@@ -205,7 +205,7 @@ export function LandingPage() {
             />
           </motion.div>
 
-          {!isSignedIn && !hasResults && !searchMutation.isPending && (
+          {!isSignedIn && !hasResults && !showComingSoon && (
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -217,7 +217,7 @@ export function LandingPage() {
             </motion.p>
           )}
 
-          {!hasResults && !searchMutation.isPending && (
+          {!hasResults && !showComingSoon && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
