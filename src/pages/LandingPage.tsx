@@ -1,6 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'motion/react';
-import { addToHistory } from '../lib/history';
 import {
   Sparkles,
   BookOpen,
@@ -16,11 +15,6 @@ import {
 } from 'lucide-react';
 import { useAuth, useClerk } from '@clerk/react';
 import { SearchPanel } from '../components/SearchPanel';
-import { ResultCard } from '../components/ResultCard';
-import { QueryMetaBanner } from '../components/QueryMetaBanner';
-import { LoadingState } from '../components/LoadingState';
-import { ErrorBanner } from '../components/ui/ErrorBanner';
-import { useSearch } from '../hooks/useSearch';
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 
@@ -146,40 +140,28 @@ export function LandingPage() {
   const [query, setQuery] = useState('');
   const [language, setLanguage] = useState('en');
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
-  const searchMutation = useSearch();
+  const [showComingSoon, setShowComingSoon] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
   const { isSignedIn } = useAuth();
   const { openSignUp } = useClerk();
-
-  useEffect(() => {
-    if (searchMutation.data && resultsRef.current) {
-      resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      const topVerse = searchMutation.data.results[0]?.verse_id;
-      if (topVerse) addToHistory(query, topVerse);
-    }
-  }, [searchMutation.data]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = () => {
     if (!isSignedIn) {
       openSignUp();
       return;
     }
-    if (!query.trim()) return;
-    searchMutation.mutate({ query, chapter: selectedChapter, limit: 5, language });
-    addToHistory(query);
+    // Backend not live yet — show "coming soon" for signed-in users
+    setShowComingSoon(true);
   };
 
   const handleSearchAgain = () => {
     setQuery('');
-    searchMutation.reset();
+    setShowComingSoon(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const hasResults = !!searchMutation.data && !searchMutation.isPending;
-  const isGuardrail =
-    searchMutation.data?.query_meta.guardrail === 'irrelevant' ||
-    searchMutation.data?.query_meta.guardrail === 'off_topic';
-  const responseId = searchMutation.data?.query_meta.response_id ?? null;
+  const hasResults = false;
+  const responseId = null;
 
   return (
     <div className="overflow-x-hidden">
@@ -253,59 +235,32 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── Loading ──────────────────────────────────────────────────────── */}
-      {searchMutation.isPending && (
-        <div className="container mx-auto px-4 py-4">
-          <LoadingState />
-        </div>
-      )}
-
-      {/* ── Error ────────────────────────────────────────────────────────── */}
-      {searchMutation.isError && (
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
-          <ErrorBanner
-            message={
-              searchMutation.error instanceof Error
-                ? searchMutation.error.message
-                : 'Something went wrong. Please try again.'
-            }
-            variant="error"
-          />
-        </div>
-      )}
-
-      {/* ── Results ──────────────────────────────────────────────────────── */}
-      {hasResults && (
-        <div className="container mx-auto px-4 py-10" ref={resultsRef}>
-          <QueryMetaBanner meta={searchMutation.data.query_meta} />
-          {isGuardrail && (
-            <div className="max-w-4xl mx-auto mb-6">
-              <ErrorBanner
-                message="This question may be outside the Gita's scope — here are the closest verses anyway."
-                variant="guardrail"
-              />
-            </div>
-          )}
-          <div
-            className="max-w-4xl mx-auto space-y-6"
-            aria-live="polite"
-            aria-label="Search results"
-          >
-            {searchMutation.data.results.map((result) => (
-              <ResultCard
-                key={result.verse_id}
-                result={result}
-                responseId={responseId}
-                onSearchAgain={handleSearchAgain}
-                userInput={query}
-              />
-            ))}
+      {/* ── Coming soon (signed-in users) ────────────────────────────────── */}
+      {showComingSoon && (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="container mx-auto px-4 py-10 max-w-lg text-center"
+          ref={resultsRef}
+        >
+          <div className="p-8 bg-white border border-orange-200 rounded-2xl shadow-sm">
+            <Sparkles className="w-10 h-10 text-orange-500 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-orange-950 mb-2">You're on the list!</h3>
+            <p className="text-sm text-orange-700 leading-relaxed">
+              The search engine is launching soon. We'll let you know as soon as it's live.
+            </p>
+            <button
+              onClick={handleSearchAgain}
+              className="mt-6 text-sm text-orange-600 hover:text-orange-800 transition-colors underline underline-offset-2"
+            >
+              Back to home
+            </button>
           </div>
-        </div>
+        </motion.div>
       )}
 
-      {/* ── Below-the-fold (hidden when results are visible) ─────────── */}
-      {!hasResults && !searchMutation.isPending && (
+      {/* ── Below-the-fold (hidden when coming-soon is visible) ──────────── */}
+      {!showComingSoon && (
         <>
 
           {/* ── Example situations ───────────────────────────────────────── */}

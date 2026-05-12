@@ -9,7 +9,10 @@ const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ClerkProvider afterSignOutUrl="/">
+    <ClerkProvider
+      publishableKey={import.meta.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY as string}
+      afterSignOutUrl="/"
+    >
       <QueryClientProvider client={queryClient}>
         <App />
       </QueryClientProvider>
