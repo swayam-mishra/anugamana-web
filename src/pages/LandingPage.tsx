@@ -177,12 +177,12 @@ export function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <h1 className="text-5xl md:text-7xl font-light text-orange-950 mb-5 leading-[1.1] tracking-tight">
+            <h1 className="text-5xl md:text-7xl font-light text-orange-950 mb-5 leading-[1.1] tracking-tight font-serif">
               Find clarity through<br />
               <span className="font-semibold italic text-orange-800">ancient wisdom</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-orange-800/80 mb-10 max-w-xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-orange-800/80 mb-10 max-w-xl mx-auto leading-relaxed font-serif">
               Describe what you're going through. Anugamana finds the Bhagavad Gita verse that speaks directly to your situation — then explains why.
             </p>
           </motion.div>
@@ -389,7 +389,7 @@ export function LandingPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.7 }}
               >
-                <p className="text-3xl md:text-4xl font-serif text-white/90 leading-relaxed mb-5">
+                <p className="text-3xl md:text-4xl font-devanagari text-white/90 leading-relaxed mb-5">
                   "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन"
                 </p>
                 <p className="text-lg italic text-indigo-200 mb-5 leading-relaxed">

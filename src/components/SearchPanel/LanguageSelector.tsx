@@ -14,7 +14,7 @@ export function LanguageSelector({ value, onChange, disabled }: LanguageSelector
       value={value}
       onChange={(e) => onChange(e.target.value)}
       disabled={disabled}
-      className="px-4 py-2 rounded-lg bg-white/50 border border-orange-200 text-orange-900 text-sm focus:outline-none focus:border-orange-400 cursor-pointer hover:bg-white/80 transition-colors"
+      className="px-4 py-2 rounded-lg bg-white/50 border border-orange-200 text-orange-900 text-sm focus:outline-none focus:border-orange-400 cursor-pointer hover:bg-white/80 transition-colors font-sans"
       aria-label="Response language"
     >
       {SUPPORTED_LANGUAGES.map((code) => (

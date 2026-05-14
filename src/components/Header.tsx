@@ -22,7 +22,7 @@ export function Header() {
             </button>
           )}
           <Link to="/" className="no-underline">
-            <h1 className="text-2xl font-semibold text-orange-900">anugamana</h1>
+            <h1 className="text-2xl font-semibold text-orange-900 font-sans">anugamana</h1>
           </Link>
         </div>
 
@@ -50,7 +50,7 @@ export function Header() {
               </button>
             </SignInButton>
             <SignUpButton mode="modal">
-              <button className="px-4 py-1.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium rounded-full transition-colors shadow-sm">
+              <button className="px-4 py-1.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium rounded-full transition-colors shadow-sm font-sans">
                 Join waitlist
               </button>
             </SignUpButton>

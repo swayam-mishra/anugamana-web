@@ -1,11 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap");
 
 @import "tailwindcss";
 
 @theme {
   /* Fonts */
-  --font-sans: "Instrument Serif", serif;
-  --font-serif: "Noto Serif Devanagari", serif;
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Lora", serif;
+  --font-devanagari: "Noto Serif Devanagari", serif;
   
   /* Custom Orange Palette (from your export) */
   --color-orange-50: oklch(.98 .016 73.684);
@@ -34,6 +35,6 @@
 @layer base {
   body {
     @apply bg-gradient-to-b from-orange-50 to-orange-100 min-h-screen text-orange-950;
-    font-family: "Instrument Serif", serif;
+    font-family: "Inter", sans-serif;
   }
 }

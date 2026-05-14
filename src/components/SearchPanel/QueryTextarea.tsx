@@ -34,7 +34,7 @@ export function QueryTextarea({ value, onChange, onSubmit, disabled }: QueryText
       }}
       disabled={disabled}
       placeholder={EXAMPLE_PROMPTS[placeholderIndex]}
-      className="w-full h-40 px-6 py-4 rounded-2xl border-2 border-orange-200 focus:border-orange-400 focus:outline-none resize-none text-lg bg-white/80 backdrop-blur-sm disabled:bg-gray-100 disabled:text-gray-500 transition-all placeholder:transition-opacity placeholder:duration-500"
+      className="w-full h-40 px-6 py-4 rounded-2xl border-2 border-orange-200 focus:border-orange-400 focus:outline-none resize-none text-lg bg-white/80 backdrop-blur-sm disabled:bg-gray-100 disabled:text-gray-500 transition-all placeholder:transition-opacity placeholder:duration-500 font-sans"
       aria-label="Describe your dilemma"
     />
   );
