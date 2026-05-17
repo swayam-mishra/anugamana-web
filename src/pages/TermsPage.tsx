@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Scale } from 'lucide-react';
 
 const EFFECTIVE_DATE = 'May 18, 2026';
-const CONTACT_EMAIL = 'swayammishra1504@gmail.com';
+const CONTACT_EMAIL = 'hello.almostperfect@gmail.com';
 
 const SECTIONS = [
   {
